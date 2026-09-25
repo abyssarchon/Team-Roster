@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Team Roster</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Teko:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #101214;
+    --bg-elevated: #17191c;
+    --bg-row: #14171a;
+    --orange: #dfa257;
+    --orange-dim: #7a5f3c;
+    --blue: #6c93b8;
+    --blue-dim: #3f5568;
+    --igl: #b9694a;
+    --text: #ece8e1;
+    --text-muted: #8b8e92;
+    --text-faint: #55585c;
+    --divider: #24272b;
+    --sub-accent: #8a7659;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    box-sizing: border-box;
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      /* Design is intentionally a dark tactical board; keep it dark in both schemes,
+         but nudge surfaces slightly for light-mode viewers' comfort. */
+    }
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  body {
+    font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+    min-height: 100%;
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 56px 24px 80px;
+  }
+
+  /* ---------- Header ---------- */
+
+  header {
+    margin-bottom: 48px;
+  }
+
+  .region {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    margin-bottom: 18px;
+  }
+
+  .region .flag {
+    font-size: 20px;
+    line-height: 1;
+  }
+
+  h1 {
+    font-family: 'Teko', sans-serif;
+    font-weight: 600;
+    font-size: clamp(52px, 12vw, 84px);
+    line-height: 0.92;
+    letter-spacing: 0.01em;
+    margin: 0;
+    color: var(--text);
+  }
+
+  h1 span {
+    color: var(--orange);
+  }
+
+  .tagline {
+    margin-top: 10px;
+    font-size: 13.5px;
+    color: var(--text-muted);
+    max-width: 46ch;
+  }
+
+  .rule {
+    height: 1px;
+    background: linear-gradient(90deg, var(--orange-dim), var(--divider) 40%);
+    margin-top: 28px;
+  }
+
+  /* ---------- Section labels ---------- */
+
+  .section-label {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin: 44px 0 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--divider);
+  }
+
+  .section-label h2 {
+    font-family: 'Teko', sans-serif;
+    font-weight: 600;
+    font-size: 26px;
+    letter-spacing: 0.03em;
+    margin: 0;
+    color: var(--text);
+  }
+
+  .section-label .count {
+    font-size: 12px;
+    color: var(--text-faint);
+  }
+
+  .section-label.sub h2 { color: var(--sub-accent); }
+
+  /* ---------- Roster rows ---------- */
+
+  .roster {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--divider);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 30px 1fr auto auto;
+    align-items: center;
+    gap: 16px;
+    background: var(--bg-row);
+    padding: 14px 16px;
+  }
+
+  .row .flag {
+    font-size: 19px;
+    line-height: 1;
+  }
+
+  .row .name {
+    font-family: 'Teko', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    letter-spacing: 0.01em;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .role {
+    justify-self: end;
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    padding: 4px 9px;
+    border-radius: 2px;
+    border: 1px solid transparent;
+    white-space: nowrap;
+  }
+
+  .role.awp   { color: var(--blue);   border-color: var(--blue-dim); }
+  .role.rifle { color: var(--orange); border-color: var(--orange-dim); }
+  .role.igl   { color: var(--igl);    border-color: var(--igl); }
+  .role.any   { color: var(--text-muted); border-color: var(--divider); }
+
+  .steam-link {
+    justify-self: end;
+    font-size: 11.5px;
+    color: var(--text-faint);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--text-faint);
+    white-space: nowrap;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .steam-link:hover,
+  .steam-link:focus-visible {
+    color: var(--orange);
+    border-color: var(--orange);
+  }
+
+  .steam-link:focus-visible {
+    outline: 2px solid var(--orange);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+
+  /* Substitute rows sit slightly quieter */
+  .roster.sub .row { background: var(--bg-elevated); }
+  .roster.sub .name { color: var(--text); }
+
+  /* ---------- Footer ---------- */
+
+  footer {
+    margin-top: 64px;
+    padding-top: 18px;
+    border-top: 1px solid var(--divider);
+    font-size: 11px;
+    color: var(--text-faint);
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  /* ---------- Small screens ---------- */
+
+  @media (max-width: 480px) {
+    .wrap { padding: 40px 16px 64px; }
+
+    .row {
+      grid-template-columns: 22px 1fr;
+      row-gap: 8px;
+    }
+
+    .row .name { font-size: 21px; }
+
+    .role, .steam-link {
+      justify-self: start;
+    }
+
+    .steam-link { grid-column: 2 / 3; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+
+    <header>
+      <div class="region"><span class="flag">🇪🇺</span> EUROPE — COUNTER-STRIKE ROSTER</div>
+      <h1>SQUAD<br><span>OVERVIEW</span></h1>
+      <p class="tagline">Aktueller Kader mit Herkunft, Steam-Profil und Rolle im Team.</p>
+      <div class="rule"></div>
+    </header>
+
+    <section>
+      <div class="section-label">
+        <h2>Main Roster</h2>
+        <span class="count">5 Spieler</span>
+      </div>
+      <div class="roster">
+
+        <div class="row">
+          <span class="flag">🇩🇪</span>
+          <span class="name">NeXi2K</span>
+          <span class="role any">ANY</span>
+          <a class="steam-link" href="https://steamcommunity.com/profiles/76561198332544231" target="_blank" rel="noopener">76561198332544231</a>
+        </div>
+
+        <div class="row">
+          <span class="flag">🇨🇦</span>
+          <span class="name">wolfol</span>
+          <span class="role awp">AWP</span>
+          <a class="steam-link" href="https://steamcommunity.com/profiles/76561199098156235" target="_blank" rel="noopener">76561199098156235</a>
+        </div>
+
+        <div class="row">
+          <span class="flag">🇩🇪</span>
+          <span class="name">karu</span>
+          <span class="role rifle">RIFLE</span>
+          <a class="steam-link" href="https://steamcommunity.com/profiles/76561199503839941" target="_blank" rel="noopener">76561199503839941</a>
+        </div>
+
+        <div class="row">
+          <span class="flag">🇸🇪</span>
+          <span class="name">eymz</span>
+          <span class="role rifle">RIFLE</span>
+          <a class="steam-link" href="https://steamcommunity.com/profiles/76561198237253238" target="_blank" rel="noopener">76561198237253238</a>
+        </div>
+
+        <div class="row">
+          <span class="flag">🇲🇳</span>
+          <span class="name">defi</span>
+          <span class="role igl">IGL</span>
+          <a class="steam-link" href="https://steamcommunity.com/profiles/76561198145208163" target="_blank" rel="noopener">76561198145208163</a>
+        </div>
+
+      </div>
+    </section>
+
+    <section>
+      <div class="section-label sub">
+        <h2>Substitute</h2>
+        <span class="count">1 Spieler</span>
+      </div>
+      <div class="roster sub">
+
+        <div class="row">
+          <span class="flag">🇩🇪</span>
+          <span class="name">Solas</span>
+          <span class="role any">ANY</span>
+          <a class="steam-link" href="https://steamcommunity.com/profiles/76561199826400105" target="_blank" rel="noopener">76561199826400105</a>
+        </div>
+
+      </div>
+    </section>
+
+    <footer>
+      <span>Stand: September 2026</span>
+      <span>Counter-Strike Team</span>
+    </footer>
+
+  </div>
+</body>
+</html>
